@@ -16,5 +16,8 @@
     <p>Thank you for ordering a {{ @SESSION['animal']->getColor() }}
         {{ @SESSION['animal']->getType() }} {{ @SESSION['animal']->getName() }}!</p>
     <p>{{ @SESSION['animal']->talk() }}</p>
+    <F3:check if="{{ @SESSION['animal'] instanceof bat }}">
+        <p>{{ @SESSION['animal']->attack() }}</p>
+    </F3:check>
 </body>
 </html>

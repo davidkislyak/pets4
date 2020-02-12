@@ -39,6 +39,8 @@ $f3->route('GET|POST /order', function($f3){
                 $animal = new dog($animal);
             } else if ($animal == "cat") {
                 $animal = new cat($animal);
+            } else if ($animal == "bat") {
+                $animal = new bat($animal);
             } else {
                 $animal = new pet($animal);
             }
