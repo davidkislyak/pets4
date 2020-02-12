@@ -10,17 +10,20 @@ class pet
 {
     private $_name;
     private $_color;
+    private $_type;
 
     /**
      * Pet class constructor.
      *
      * @param string $name the name of the pet
      * @param string $color the color of the pet
+     * @param string $type the type of pet
      */
-    function __construct($name = "unknown", $color = "unknown")
+    function __construct($name = "unknown", $color = "unknown", $type = "unknown")
     {
         $this->_name = $name;
         $this->_color = $color;
+        $this->_type = $type;
     }
 
     //Setters
@@ -34,6 +37,14 @@ class pet
         $this->_color = $color;
     }
 
+    /**
+     * @param string $type
+     */
+    public function setType($type)
+    {
+        $this->_type = $type;
+    }
+
     //Getters
     function getName()
     {
@@ -43,6 +54,14 @@ class pet
     function getColor()
     {
         return $this->_color;
+    }
+
+    /**
+     * @return string
+     */
+    public function getType()
+    {
+        return $this->_type;
     }
 
     //Methods
