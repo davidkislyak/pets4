@@ -1,6 +1,4 @@
 <?php
-//session start
-session_start();
 //turn on error reporting
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
@@ -8,6 +6,9 @@ ini_set('display_errors', 1);
 //require autoload file
 require_once('vendor/autoload.php');
 require_once('model/validation-functions.php');
+
+//session start
+session_start();
 
 //create instance of the base class
 $f3 = Base::instance();
@@ -32,7 +33,18 @@ $f3->route('GET|POST /order', function($f3){
         $animal = $_POST['animal'];
 
         if (validName($animal)) {
+//            $_SESSION['animal'] = $animal;
+
+            if ($animal == "dog") {
+                $animal = new dog($animal);
+            } else if ($animal == "cat") {
+                $animal = new cat($animal);
+            } else {
+                $animal = new pet($animal);
+            }
+
             $_SESSION['animal'] = $animal;
+
             $f3->reroute('/order2');
         } else {
             $f3->set("errors['animal']", "Please enter an animal.");
@@ -49,7 +61,7 @@ $f3->route('GET|POST /order2',
         if (isset($_POST['submit'])) {
             $color = $_POST['color'];
             if (validColor($color)) {
-                $_SESSION['color'] = $color;
+                $_SESSION['animal']->setColor($color);
                 $f3->reroute('/results');
             } else {
                 $f3->set("errors['color']", "Please select a color.");
@@ -63,30 +75,6 @@ $f3->route('GET|POST /order2',
 $f3->route('GET /results', function (){
     $view = new Template();
     echo $view->render('views/results.html');
-});
-
-$f3->route('POST /@animal', function($f3, $params) {
-    $input  = $params['animal'];
-
-    switch($input) {
-        case 'dog':
-            echo "<p>Woof</p>";
-            break;
-        case 'cow':
-            echo "<p>Moo</p>";
-            break;
-        case 'cat':
-            echo "<p>Meow</p>";
-            break;
-        case 'chicken':
-            echo "<p>Bawk</p>";
-            break;
-        case 'lizard':
-            echo "<p>Hiss</p>";
-            break;
-        default:
-            $f3->error(404);
-    }
 });
 
 //run fat free

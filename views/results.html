@@ -12,7 +12,9 @@
     <title>Results</title>
 </head>
 <body>
-        <h1>Results page</h1>
-        <p>Thank you for ordering a {{ @SESSION['color'] }} {{ @SESSION['animal'] }}!</p>
+    <h1>Results page</h1>
+    <p>Thank you for ordering a {{ @SESSION['animal']->getColor() }}
+        {{ @SESSION['animal']->getName() }}!</p>
+    <p>{{ @SESSION['animal']->talk() }}</p>
 </body>
 </html>
