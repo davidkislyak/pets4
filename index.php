@@ -17,70 +17,26 @@ $f3 = Base::instance();
 $f3->set('DEBUG', 3);
 
 $f3->set('colors', array('pink', 'green', 'blue'));
+$controller = new PetController($f3);
 
 //define a default route
-$f3->route('GET /', function(){
-    $view = new Template();
-//    echo $view->render('views/home.html');
-    echo "<h1>MY PETS</h1>";
-    echo "<a href = 'order'>Order a Pet</a>";
+$f3->route('GET /', function () {
+    $GLOBALS['controller']->home();
 });
 
-$f3->route('GET|POST /order', function($f3){
+$f3->route('GET|POST /order', function ($f3) {
     session_unset();
 
-    if (isset($_POST['animal'])){
-        $animal = $_POST['animal'];
-
-        if (validString($animal)) {
-            $_SESSION['animal'] = $animal;
-
-            if ($animal == "dog") {
-                $animal = new dog($animal);
-            } else if ($animal == "cat") {
-                $animal = new cat($animal);
-            } else if ($animal == "bat") {
-                $animal = new bat($animal);
-            } else {
-                $animal = new pet($animal);
-            }
-
-            $_SESSION['animal'] = $animal;
-
-            $f3->reroute('/order2');
-        } else {
-            $f3->set("errors['animal']", "Please enter an animal.");
-        }
-    }
-
-    $view = new Template();
-    echo $view->render('views/form1.html');
+    $GLOBALS['controller']->order1($f3);
 });
 
 $f3->route('GET|POST /order2',
-    function($f3) {
-
-        if (isset($_POST['submit'])) {
-            $name = $_POST['name'];
-            $color = $_POST['color'];
-            $type = $_POST['type'];
-            if (validColor($color)) {
-                $_SESSION['animal']->setColor($color);
-                $_SESSION['animal']->setType($type);
-                $_SESSION['animal']->setName($name);
-                $f3->reroute('/results');
-            } else {
-                $f3->set("errors['color']", "Please select a color.");
-            }
-        }
-
-        $template = new Template();
-        echo $template->render('views/form2.html');
+    function ($f3) {
+        $GLOBALS['controller']->order2($f3);
     });
 
-$f3->route('GET /results', function (){
-    $view = new Template();
-    echo $view->render('views/results.html');
+$f3->route('GET /results', function () {
+    $GLOBALS['controller']->results();
 });
 
 //run fat free
